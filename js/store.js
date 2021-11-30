@@ -78,3 +78,23 @@ const productoAgregado = (payload) => ({
     type: "producto-agregado",
     payload
 });
+
+
+// function loggerMiddleware(store) {
+//     return function dispatchWrapper(next) {
+//         return function actionHandler(action) {
+//             next(action);
+//             const state = store.getState();
+//             console.log("dispatching", action);
+//             console.log("state", state);
+//         }
+//     }
+// }
+
+const loggerMiddleware = store => next => action => {
+    console.log("dispatching", action);
+    const result = next(action);
+    console.log("next state", store.getState());
+    return result;
+}
+
