@@ -57,3 +57,24 @@ const reducer = (state, action) => {
     return state;
 };
 
+const productoSeleccionado = (codigo) => ({
+    type: "producto-seleccionado",
+    payload: {
+        codigo
+    }
+});
+
+const productoEliminado = (codigo) => ({
+    type: "producto-eliminado",
+    payload: { codigo }
+});
+
+const productoModificado = (payload) => ({
+    type: "producto-modificado",
+    payload
+});
+
+const productoAgregado = (payload) => ({
+    type: "producto-agregado",
+    payload
+});

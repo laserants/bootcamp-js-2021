@@ -17,40 +17,19 @@ store.subscribe(() => {
     }
 });
 
-ui.onFormSubmit = (payload) => {
+ui.onFormSubmit = (producto) => {
 
-    if (payload.codigo)
+    if (producto.codigo)
     {
-        store.dispatch({
-            type: "producto-modificado",
-            payload
-        });
+        store.dispatch(productoModificado(producto));
     }
     else {
-        store.dispatch({
-            type: "producto-agregado",
-            payload
-        });
+        store.dispatch(productoAgregado(producto));
     }
 
-    store.dispatch({
-        type: "producto-seleccionado",
-        payload: {
-            codigo: null
-        }
-    });
+    store.dispatch(productoSeleccionado(null));
 }
 
-ui.onEliminarClick = (codigo) => {
-    store.dispatch({
-        type: "producto-eliminado",
-        payload: { codigo }
-    });
-}
+ui.onEliminarClick = (codigo) => store.dispatch(productoEliminado(codigo));
 
-ui.onEditarClick = (codigo) => {
-    store.dispatch({
-        type: "producto-seleccionado",
-        payload: { codigo }
-    });
-}
+ui.onEditarClick = (codigo) =>  store.dispatch(productoSeleccionado(codigo));
