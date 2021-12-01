@@ -3,34 +3,32 @@ const preloadedState = {
     productos: []
 };
 
-const middlewares = Redux.applyMiddleware(loggerMiddleware);
+const middlewares = Redux.applyMiddleware(
+    loggerMiddleware,
+    agregarOModificarProductoMiddleware,
+    generadorCodigoProductoBuilder(100),
+);
+
 const store = Redux.createStore(reducer, preloadedState, middlewares);
 
-let latestState;
+store.subscribe(dispatchOnChange(store.getState, (state) => {
+    ui.renderForm(state.producto);
+    ui.renderTable(state.productos);
+}))
 
-store.subscribe(() => {
-    let currentState = store.getState();
-    if (currentState != latestState)
-    {
-        latestState = currentState;
-        ui.renderForm(currentState.producto);
-        ui.renderTable(currentState.productos);
+ui.onFormSubmit = producto => store.dispatch(agregarOModificarProducto(producto));
+ui.onEliminarClick = codigo => store.dispatch(productoEliminado(codigo));
+ui.onEditarClick = codigo => store.dispatch(productoSeleccionado(codigo));
+
+function dispatchOnChange(getState, dispatch) {
+    let latestState;
+
+    return function () {
+        let currentState = getState();
+        if (currentState != latestState)
+        {
+            latestState = currentState;
+            dispatch(currentState);
+        }
     }
-});
-
-ui.onFormSubmit = (producto) => {
-
-    if (producto.codigo)
-    {
-        store.dispatch(productoModificado(producto));
-    }
-    else {
-        store.dispatch(productoAgregado(producto));
-    }
-
-    store.dispatch(productoSeleccionado(null));
 }
-
-ui.onEliminarClick = (codigo) => store.dispatch(productoEliminado(codigo));
-
-ui.onEditarClick = (codigo) =>  store.dispatch(productoSeleccionado(codigo));
