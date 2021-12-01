@@ -1,4 +1,4 @@
-const ui = {
+export const ui = {
     onFormSubmit: (data) => {},
     onEliminarClick: (codigo) => {},
     onEditarClick: (codigo) => {},
