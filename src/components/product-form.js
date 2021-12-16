@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { agregarOModificarProducto } from "../store/store";
 
 const ProductForm = () => {
     const categorias = [
@@ -8,12 +10,25 @@ const ProductForm = () => {
         { codigo: 4, nombre: 'Categoria 4' }
     ];
 
+    const producto = useSelector((state) => state.producto);
+    const dispatch = useDispatch();
     const [values, setValues] = useState({
+        codigo: 0,
         nombre: '',
         cantidad: '',
         precio: '',
         categoria: 1
     });
+
+    useEffect(() => {
+        setValues({
+            codigo: producto.codigo || 0,
+            nombre: producto.nombre || '',
+            cantidad: producto.cantidad || '',
+            precio: producto.precio || '',
+            categoria: producto.categoria || 1
+        })
+    }, [producto])
 
     const onChange = (event) => {
         const target = event.target;
@@ -27,13 +42,17 @@ const ProductForm = () => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        console.log('values: ', values);
+        const payload = {
+            ...values,
+            cantidad: parseInt(values.cantidad),
+            precio: parseFloat(values.precio)
+        }
+        dispatch(agregarOModificarProducto(payload));
     }
 
     const canSave = !!(values.nombre && values.cantidad && values.precio);
 
     return <form action="index.html" onSubmit={onSubmit}>
-        <input type="hidden" name="codigo" id="codigo" />
         <div className="mb-3">
             <label htmlFor="nombre" className="form-label">Nombre</label>
             <input type="text" name="nombre" id="nombre" className="form-control" value={values.nombre} onChange={onChange} />
