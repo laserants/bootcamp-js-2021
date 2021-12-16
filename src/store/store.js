@@ -71,6 +71,24 @@ export const loggerMiddleware = store => next => action => {
     return result;
 }
 
+export const storageMiddleware = store => next => action => {
+
+    const actions = [
+        ActionTypes.ProductoAgregado,
+        ActionTypes.ProductoModificado,
+        ActionTypes.ProductoEliminado
+    ];
+    const result = next(action);
+
+    if (actions.indexOf(action.type) >= 0)
+    {
+        const state = store.getState();
+        localStorage.setItem("state", JSON.stringify(state));
+    }
+
+    return result;
+}
+
 export const agregarOModificarProductoMiddleware = store => next => action => {
     if (action.type != ActionTypes.ProductoAgregadoModificado)
     {
