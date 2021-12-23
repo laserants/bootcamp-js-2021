@@ -1,0 +1,16 @@
+### Home
+GET http://localhost:5000/
+
+### Obtener Productos
+GET http://localhost:5000/productos
+Authorization: hola-mundo
+
+### Crear Producto
+POST http://localhost:5000/productos
+Content-Type: application/json
+
+{
+    "nombre": "producto c",
+    "cantidad": 3,
+    "precio": 30
+}
