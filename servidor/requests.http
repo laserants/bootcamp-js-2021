@@ -2,7 +2,7 @@
 GET http://localhost:5000/
 
 ### Obtener Productos
-GET http://localhost:5000/productos
+GET http://localhost:5001/productos
 Authorization: hola-mundo
 
 ### Crear Producto
@@ -10,7 +10,27 @@ POST http://localhost:5000/productos
 Content-Type: application/json
 
 {
-    "nombre": "producto c",
-    "cantidad": 3,
-    "precio": 30
+    "nombre": "libro",
+    "cantidad": 2,
+    "precio": 20
 }
+
+### Modificar Producto
+PUT http://localhost:5000/productos/6
+Content-Type: application/json
+
+{
+    "nombre": "producto dos",
+    "cantidad": 4,
+    "precio": 40
+}
+
+### Eliminar Producto
+DELETE http://localhost:5000/productos/2
+
+
+### Obtener Producto
+GET http://localhost:5000/productos/4
+
+### Filtrar Productos
+GET http://localhost:5000/productos?filtro=libro
