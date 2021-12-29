@@ -1,18 +1,18 @@
 import { applyMiddleware, createStore } from "redux";
 import * as storage from "./store";
+import apiMiddleware from "./redux-api";
 
-const savedState = localStorage.getItem("state");
-const deserialized = savedState && JSON.parse(savedState);
-const preloadedState = deserialized || {
+const preloadedState = {
     producto: {},
     productos: []
 };
 
 const middlewares = applyMiddleware(
-    storage.loggerMiddleware,
-    storage.agregarOModificarProductoMiddleware,
-    storage.generadorCodigoProductoBuilder(100),
-    storage.storageMiddleware,
+    // storage.loggerMiddleware,
+    apiMiddleware,
+    //storage.agregarOModificarProductoMiddleware,
+    //storage.generadorCodigoProductoBuilder(100),
+    //storage.storageMiddleware,
 );
 
 const store = createStore(storage.reducer, preloadedState, middlewares);
