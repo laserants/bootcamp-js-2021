@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { agregarOModificarProducto, productoSeleccionado } from "../store/store";
 
 const ProductForm = () => {
+
     const categorias = [
         { codigo: 1, nombre: 'Categoria 1' },
         { codigo: 2, nombre: 'Categoria 2' },
@@ -84,6 +85,7 @@ const ProductForm = () => {
         </div>
         <div className="mb-3">
             <button type="submit" className="btn btn-primary" disabled={!canSave} >Guardar</button>
+            <Link to="/" className="btn btn-link">Cancelar</Link>
         </div>
     </form>;
 }

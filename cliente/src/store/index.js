@@ -1,6 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { createBrowserHistory } from "history";
 import { connectRouter, routerMiddleware } from "connected-react-router";
+import { composeWithDevTools } from "redux-devtools-extension";
 import * as storage from "./store";
 import apiMiddleware from "./redux-api";
 
@@ -8,13 +9,11 @@ const history = createBrowserHistory();
 
 const preloadedState = {};
 
-const middlewares = applyMiddleware(
-    // storage.loggerMiddleware,
-    routerMiddleware(history),
-    apiMiddleware,
-    //storage.agregarOModificarProductoMiddleware,
-    //storage.generadorCodigoProductoBuilder(100),
-    //storage.storageMiddleware,
+const middlewares = composeWithDevTools(
+    applyMiddleware(
+        routerMiddleware(history),
+        apiMiddleware,
+    )
 );
 
 const reducer = combineReducers({
