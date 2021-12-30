@@ -13,13 +13,14 @@ module.exports = {
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
-        publicPath: ""
+        publicPath: "/"
     },
     mode: mode,
     devServer: {
         port: 5000,
         open: true,
-        hot: true
+        hot: true,
+        historyApiFallback: true
     },
     module: {
         rules: [

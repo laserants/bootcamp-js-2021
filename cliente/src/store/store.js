@@ -8,17 +8,23 @@ const ActionTypes = {
     ProductoCargar: "producto-cargar",
 };
 
-export const reducer = (state, action) => {
-
+export const producto = (state = {}, action) => {
     switch (action.type) {
-        case ActionTypes.ProductosCargar:
-            return {...state, productos: action.payload };
         case ActionTypes.ProductoCargar:
-            return {...state, producto: action.payload };
+            return action.payload;
         default:
             return state;
     }
-};
+}
+
+export const productos = (state = [], action) => {
+    switch (action.type) {
+        case ActionTypes.ProductosCargar:
+            return action.payload;
+        default:
+            return state;
+    }
+}
 
 export const productoSeleccionado = (codigo) => ({
     type: ActionTypes.ProductoSeleccionado,

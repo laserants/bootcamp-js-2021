@@ -1,4 +1,5 @@
 import api from "./api";
+import { push } from "connected-react-router"
 
 const ApiActionTypes = {
     ObtenerTodos: "FetchProductos",
@@ -21,9 +22,7 @@ const apiMiddleware = ({dispatch}) => next => async action => {
             const { codigo } = data;
             const httpCall = !codigo ? api.add(data) : api.update(data);
             const producto = await httpCall;
-            const productos = await api.all();
-            dispatch({ type: "productos-cargar", payload: productos });
-            dispatch({ type: "producto-seleccionado", payload: {} });
+            dispatch(push("/"));
             console.log('</add-or-edit>');
             break;
         }
@@ -48,7 +47,6 @@ const apiMiddleware = ({dispatch}) => next => async action => {
                 const producto = await api.single(codigo);
                 dispatch({ type: "producto-cargar", payload: producto });
             }
-            
             console.log('</seleccionar>');
             break;
         }
