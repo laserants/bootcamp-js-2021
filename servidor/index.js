@@ -33,7 +33,7 @@ app.post("/productos", async (req, res) => {
 })
 
 app.get("/productos/:codigo", async (req, res) => {
-    const codigo = parseInt(req.params.codigo, 10);
+    const codigo = req.params.codigo;
     const producto = await productos.single(codigo);
 
     if (!producto)
@@ -47,7 +47,7 @@ app.get("/productos/:codigo", async (req, res) => {
 })
 
 app.put("/productos/:codigo", async (req, res) => {
-    const codigo = parseInt(req.params.codigo, 10);
+    const codigo = req.params.codigo;
 
     try {
         const newProducto = await productos.update(codigo, req.body);
@@ -61,7 +61,7 @@ app.put("/productos/:codigo", async (req, res) => {
 
 
 app.delete("/productos/:codigo", async (req, res) => {
-    const codigo = parseInt(req.params.codigo, 10);
+    const codigo = req.params.codigo;
 
     try {
         await productos.remove(codigo);
