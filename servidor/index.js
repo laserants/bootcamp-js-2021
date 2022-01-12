@@ -1,17 +1,8 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import { productos } from "./database"
 
-let lastId = 1;
-let productos = [
-    {
-        nombre: "producto a",
-        cantidad: 1,
-        precio: 10,
-        codigo: lastId,
-        total: 10
-    }
-];
 
 const app = express();
 
@@ -21,29 +12,29 @@ app.use(logs);
 
 app.get("/", (req, res) => res.send("<h1>API de productos</h1>"));
 
-app.get("/productos", (req, res) => {
+app.get("/productos", async (req, res) => {
     const filtro = req.query.filtro;
+    let result;
 
     if (filtro)
     {
-        res.json(productos.filter(p => p.nombre.indexOf(filtro) >= 0))
+        result = await productos.filter(filtro);
     } else {
-        res.json(productos)
+        result = await productos.all();
     }
+
+    res.json(result)
 });
 
-app.post("/productos", (req, res) => {
-    lastId++;
-    const { cantidad, precio } = req.body;
-    const producto = {...req.body, codigo: lastId, total: cantidad * precio };
-    productos.push(producto);
+app.post("/productos", async (req, res) => {
+    const producto = await productos.add(req.body);
     res.status(201)
     res.json(producto);
 })
 
-app.get("/productos/:codigo", (req, res) => {
+app.get("/productos/:codigo", async (req, res) => {
     const codigo = parseInt(req.params.codigo, 10);
-    const producto = productos.find(p => p.codigo == codigo);
+    const producto = await productos.single(codigo);
 
     if (!producto)
     {
@@ -55,36 +46,30 @@ app.get("/productos/:codigo", (req, res) => {
     }
 })
 
-app.put("/productos/:codigo", (req, res) => {
+app.put("/productos/:codigo", async (req, res) => {
     const codigo = parseInt(req.params.codigo, 10);
-    const producto = productos.find(p => p.codigo == codigo);
 
-    if (!producto)
-    {
-        res.status(404)
-        res.json({ mensaje: "No existe ningun producto con codigo " + codigo });
-    } else {
-        const { cantidad, precio } = req.body;
-        const index = productos.indexOf(producto);
-        const nuevoProducto = productos[index] = { ...req.body, codigo, total: cantidad * precio };
+    try {
+        const newProducto = await productos.update(codigo, req.body);
         res.status(200);
-        res.json(nuevoProducto);
+        res.json(newProducto);
+    } catch (mensage) {
+        res.status(404);
+        res.json({ mensage });
     }
 })
 
 
-app.delete("/productos/:codigo", (req, res) => {
+app.delete("/productos/:codigo", async (req, res) => {
     const codigo = parseInt(req.params.codigo, 10);
-    const producto = productos.find(p => p.codigo == codigo);
 
-    if (!producto)
-    {
-        res.status(404)
-        res.json({ mensaje: "No existe ningun producto con codigo " + codigo });
-    } else {
-        productos = productos.filter(x => x != producto);
+    try {
+        await productos.remove(codigo);
         res.status(200);
         res.json({ message: "Producto eliminado" });
+    } catch (mensaje) {
+        res.status(404)
+        res.json({ mensaje });
     }
 })
 

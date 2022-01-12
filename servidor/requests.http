@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Modificar Producto
-PUT http://localhost:5000/productos/6
+PUT http://localhost:5001/productos/2
 Content-Type: application/json
 
 {
