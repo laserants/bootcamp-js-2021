@@ -7,22 +7,24 @@ const ActionTypes = {
     AsignarProductos: "asignar-productos"
 };
 
-export const reducer = (state, action) => {
-
+export const producto = (state = {}, action) => {
     switch (action.type) {
         case ActionTypes.ProductoSeleccionado:
-            return productoSeleccionadoReducer(state, action);
-
-        case ActionTypes.AsignarProductos:
-            return {
-                ...state,
-                productos: action.payload
-            };
-
+            return action.payload;
         default:
             return state;
     }
-};
+}
+
+
+export const productos = (state = [], action) => {
+    switch (action.type) {
+        case ActionTypes.AsignarProductos:
+            return action.payload;
+        default:
+            return state;
+    }
+}
 
 export const productoSeleccionado = (codigo) => ({
     type: ActionTypes.ProductoSeleccionado,

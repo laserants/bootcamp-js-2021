@@ -10,6 +10,3 @@ ReactDOM.render(
         <App />
     </Provider>,
     rootElement);
-
-store.dispatch({ type: "obtener-productos" });
-
